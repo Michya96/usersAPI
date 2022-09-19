@@ -11,10 +11,10 @@ app.listen(port, (req,res) => console.log(`server started on port ${port}`))
 
 // Connecting to db
 const mongoose = require('mongoose');
+let test = "no work"
 
-mongoose.connect(process.env.MONGODB_URI)
-    .then(() => console.log('Connected to MongoDB'))
-
-app.get('/', (req,res) => {
-    res.send('test');
+app.get('/', async (req,res) => {
+    await mongoose.connect(process.env.MONGODB_URI)
+        .then(() => test = "it worked")
+    res.send(test);
 })
