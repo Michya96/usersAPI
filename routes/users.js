@@ -12,19 +12,20 @@ function authenticateToken(req,res,next) {
         const verified = jwt.verify(token, process.env.JWT_PRIVATE_KEY,);
         next();
     } catch(err){
-        res.status(400).send('Invalid token');
+        res.sendStatus(400);
     }
 }
 // Getting all users
 router.get('/users', authenticateToken, async (req,res) => {
-    if (req.query.role) return res.status(200).send(await User.find({role: req.query.role}))
-    const users = await User.find();
+    if (req.query.role) return res.status(200).send(await User.find({role: req.query.role}).select('-_id'));
+    const users = await User.find().select('-_id');
+    if(!users) return res.sendStatus(404);
     res.send(users);
 })
 
 // Getting one user
 router.get('/user/:id', authenticateToken, async (req,res) => {
-    const user = await User.findOne({id:req.params.id})
+    const user = await User.findOne({id:req.params.id}).select('-_id');
     if (!user) return res.status(404).send("Couldn't find an user with given id")
     return res.status(200).send(user);
 })
@@ -32,7 +33,6 @@ router.get('/user/:id', authenticateToken, async (req,res) => {
 // Adding an user
 router.post('/users', authenticateToken, async (req,res) => {
     const user = new User({
-        id: 0,
         firstName: req.body.firstName,
         lastName: req.body.lastName,
         email: req.body.email,
@@ -42,7 +42,7 @@ router.post('/users', authenticateToken, async (req,res) => {
         const result = await user.save();
         res.status(201).send(user);
     } catch(err) {
-        res.status(400).send(err.message);
+        res.sendStatus(400).send(err.message);
         
     }
     
@@ -72,7 +72,7 @@ router.patch('/user/:id', authenticateToken, async (req,res) => {
 // Deleting existing user
 router.delete('/user/:id', authenticateToken, async (req,res) => {
     const user = await User.findOne({id:req.params.id})
-    if (!user) return res.status(404).send("Couldn't find an user with given id")
+    if (!user) return res.sendStatus(404).send("Couldn't find an user with given id")
     try{
         const deletedUser = await User.deleteOne({id:req.params.id});
         res.status(200).send(deletedUser)
