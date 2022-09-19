@@ -4,7 +4,6 @@ const {User} = require('../db');
 const jwt = require("jsonwebtoken")
 
 const token = jwt.sign("michya96", process.env.JWT_PRIVATE_KEY)
-console.log(token)
 
 // Jwt authentication
 function authenticateToken(req,res,next) {
