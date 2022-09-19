@@ -1,9 +1,10 @@
 const express = require('express');
 const router = express.Router();
-// const User = require('../index')
+const User = require('../db');
 // Getting all users
-router.get('/users', (req,res) => {
-    res.send('Working')
+router.get('/users', async (req,res) => {
+    const users = await User.find();
+    res.send(users);
 })
 
 // Getting one user
@@ -12,9 +13,7 @@ router.get('/user/:id', (req,res) => {
 })
 
 // Adding an user
-router.post('/users', async (req,res) => {
-    // const users = await User.find();
-    // res.send(users);
+router.post('/users', (req,res) => {
 })
 
 // Updating existing user
@@ -26,6 +25,5 @@ router.patch('/user/:id', (req,res) => {
 router.delete('/user/:id', (req,res) => {
     res.send(`the id u have is ${req.params.id}`)
 })
-
 
 module.exports = router;
