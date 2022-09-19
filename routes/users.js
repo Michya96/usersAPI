@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../index')
+// const User = require('../index')
 // Getting all users
 router.get('/users', (req,res) => {
     res.send('Working')
@@ -13,8 +13,8 @@ router.get('/user/:id', (req,res) => {
 
 // Adding an user
 router.post('/users', async (req,res) => {
-    const users = await User.find();
-    res.send(users);
+    // const users = await User.find();
+    // res.send(users);
 })
 
 // Updating existing user

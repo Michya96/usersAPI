@@ -12,8 +12,8 @@ app.listen(port, (req,res) => console.log(`server started on port ${port}`))
 // Connecting to db
 const mongoose = require('mongoose');
 mongoose.connect(process.env.MONGODB_URI)
-app.get('/', async (req,res) => {
-})
+// app.get('/', async (req,res) => {
+// })
 
 const userSchema = new mongoose.Schema({
     id: Number,
@@ -46,4 +46,4 @@ async function getUsers() {
 }
 getUsers();
 
-module.exports = User;
+// module.exports = User;
